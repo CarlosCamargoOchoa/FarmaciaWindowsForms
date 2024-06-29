@@ -9,6 +9,6 @@ namespace FarmaciaWindowsForms.Models
     public class TipoMedicamentoModel
     {
         public int Id { get; set; }
-        private string Descripcion {  get; set; }
+        public string Descripcion {  get; set; }
     }
 }

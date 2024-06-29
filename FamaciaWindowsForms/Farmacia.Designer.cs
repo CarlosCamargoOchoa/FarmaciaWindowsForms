@@ -30,8 +30,8 @@
         {
             components = new System.ComponentModel.Container();
             panel1 = new Panel();
+            btnTerminarPedido = new Button();
             lblSucursal = new Label();
-            lblDistribuidor = new Label();
             lblFechaHora = new Label();
             tblProductos = new DataGridView();
             Tipo = new DataGridViewTextBoxColumn();
@@ -49,31 +49,36 @@
             CantidadProductos = new DataGridViewTextBoxColumn();
             label7 = new Label();
             panel3 = new Panel();
-            button1 = new Button();
+            txtNombreMedicamento = new TextBox();
+            btnAgregarProducto = new Button();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
-            numericUpDown1 = new NumericUpDown();
-            cbCantidadUnidades = new ComboBox();
-            txtNombreMedicamento = new TextBox();
-            panel4 = new Panel();
-            label6 = new Label();
-            label5 = new Label();
+            nmCantidadProducto = new NumericUpDown();
+            cbTipoMedicamento = new ComboBox();
+            pnlSucursal = new Panel();
+            chkSecundaria = new CheckBox();
+            chkPrincipal = new CheckBox();
             tmrFechaHora = new System.Windows.Forms.Timer(components);
+            pnlDistribuidor = new Panel();
+            label5 = new Label();
+            label6 = new Label();
+            lblDistribuidor = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tblProductos).BeginInit();
             panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tblHistoricoPedidos).BeginInit();
             panel3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).BeginInit();
-            panel4.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)nmCantidadProducto).BeginInit();
+            pnlSucursal.SuspendLayout();
             SuspendLayout();
             // 
             // panel1
             // 
             panel1.BorderStyle = BorderStyle.FixedSingle;
-            panel1.Controls.Add(lblSucursal);
             panel1.Controls.Add(lblDistribuidor);
+            panel1.Controls.Add(btnTerminarPedido);
+            panel1.Controls.Add(lblSucursal);
             panel1.Controls.Add(lblFechaHora);
             panel1.Controls.Add(tblProductos);
             panel1.Controls.Add(label10);
@@ -85,6 +90,15 @@
             panel1.Size = new Size(464, 385);
             panel1.TabIndex = 0;
             // 
+            // btnTerminarPedido
+            // 
+            btnTerminarPedido.Location = new Point(373, 352);
+            btnTerminarPedido.Name = "btnTerminarPedido";
+            btnTerminarPedido.Size = new Size(75, 23);
+            btnTerminarPedido.TabIndex = 8;
+            btnTerminarPedido.Text = "Finalizar";
+            btnTerminarPedido.UseVisualStyleBackColor = true;
+            // 
             // lblSucursal
             // 
             lblSucursal.AutoSize = true;
@@ -93,15 +107,6 @@
             lblSucursal.Name = "lblSucursal";
             lblSucursal.Size = new Size(0, 18);
             lblSucursal.TabIndex = 7;
-            // 
-            // lblDistribuidor
-            // 
-            lblDistribuidor.AutoSize = true;
-            lblDistribuidor.Font = new Font("Tahoma", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDistribuidor.Location = new Point(136, 109);
-            lblDistribuidor.Name = "lblDistribuidor";
-            lblDistribuidor.Size = new Size(0, 18);
-            lblDistribuidor.TabIndex = 6;
             // 
             // lblFechaHora
             // 
@@ -122,7 +127,7 @@
             tblProductos.Location = new Point(12, 172);
             tblProductos.Name = "tblProductos";
             tblProductos.ReadOnly = true;
-            tblProductos.Size = new Size(436, 203);
+            tblProductos.Size = new Size(436, 150);
             tblProductos.TabIndex = 4;
             // 
             // Tipo
@@ -245,26 +250,35 @@
             // panel3
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
-            panel3.Controls.Add(button1);
+            panel3.Controls.Add(txtNombreMedicamento);
+            panel3.Controls.Add(btnAgregarProducto);
             panel3.Controls.Add(label3);
             panel3.Controls.Add(label2);
             panel3.Controls.Add(label1);
-            panel3.Controls.Add(numericUpDown1);
-            panel3.Controls.Add(cbCantidadUnidades);
-            panel3.Controls.Add(txtNombreMedicamento);
+            panel3.Controls.Add(nmCantidadProducto);
+            panel3.Controls.Add(cbTipoMedicamento);
             panel3.Location = new Point(12, 224);
             panel3.Name = "panel3";
             panel3.Size = new Size(476, 170);
             panel3.TabIndex = 2;
             // 
-            // button1
+            // txtNombreMedicamento
             // 
-            button1.Location = new Point(379, 137);
-            button1.Name = "button1";
-            button1.Size = new Size(75, 23);
-            button1.TabIndex = 6;
-            button1.Text = "Agregar";
-            button1.UseVisualStyleBackColor = true;
+            txtNombreMedicamento.Location = new Point(16, 39);
+            txtNombreMedicamento.Name = "txtNombreMedicamento";
+            txtNombreMedicamento.Size = new Size(439, 23);
+            txtNombreMedicamento.TabIndex = 7;
+            txtNombreMedicamento.KeyPress += txtNombreMedicamento_KeyPress;
+            // 
+            // btnAgregarProducto
+            // 
+            btnAgregarProducto.Location = new Point(379, 137);
+            btnAgregarProducto.Name = "btnAgregarProducto";
+            btnAgregarProducto.Size = new Size(75, 23);
+            btnAgregarProducto.TabIndex = 6;
+            btnAgregarProducto.Text = "Agregar";
+            btnAgregarProducto.UseVisualStyleBackColor = true;
+            btnAgregarProducto.Click += btnAgregarProducto_Click;
             // 
             // label3
             // 
@@ -293,67 +307,104 @@
             label1.TabIndex = 3;
             label1.Text = "Nombre del medicamento";
             // 
-            // numericUpDown1
+            // nmCantidadProducto
             // 
-            numericUpDown1.Location = new Point(16, 139);
-            numericUpDown1.Name = "numericUpDown1";
-            numericUpDown1.Size = new Size(120, 23);
-            numericUpDown1.TabIndex = 2;
+            nmCantidadProducto.Location = new Point(16, 139);
+            nmCantidadProducto.Name = "nmCantidadProducto";
+            nmCantidadProducto.Size = new Size(120, 23);
+            nmCantidadProducto.TabIndex = 2;
             // 
-            // cbCantidadUnidades
+            // cbTipoMedicamento
             // 
-            cbCantidadUnidades.FormattingEnabled = true;
-            cbCantidadUnidades.Location = new Point(17, 84);
-            cbCantidadUnidades.Name = "cbCantidadUnidades";
-            cbCantidadUnidades.Size = new Size(438, 23);
-            cbCantidadUnidades.TabIndex = 1;
+            cbTipoMedicamento.FormattingEnabled = true;
+            cbTipoMedicamento.Location = new Point(17, 84);
+            cbTipoMedicamento.Name = "cbTipoMedicamento";
+            cbTipoMedicamento.Size = new Size(438, 23);
+            cbTipoMedicamento.TabIndex = 1;
+            cbTipoMedicamento.SelectedIndexChanged += cbTipoMedicamento_SelectedIndexChanged;
             // 
-            // txtNombreMedicamento
+            // pnlSucursal
             // 
-            txtNombreMedicamento.Location = new Point(16, 31);
-            txtNombreMedicamento.Name = "txtNombreMedicamento";
-            txtNombreMedicamento.Size = new Size(438, 23);
-            txtNombreMedicamento.TabIndex = 0;
+            pnlSucursal.BorderStyle = BorderStyle.FixedSingle;
+            pnlSucursal.Controls.Add(chkSecundaria);
+            pnlSucursal.Controls.Add(chkPrincipal);
+            pnlSucursal.Location = new Point(12, 140);
+            pnlSucursal.Name = "pnlSucursal";
+            pnlSucursal.Size = new Size(476, 69);
+            pnlSucursal.TabIndex = 3;
             // 
-            // panel4
+            // chkSecundaria
             // 
-            panel4.BorderStyle = BorderStyle.FixedSingle;
-            panel4.Controls.Add(label6);
-            panel4.Controls.Add(label5);
-            panel4.Location = new Point(12, 9);
-            panel4.Name = "panel4";
-            panel4.Size = new Size(476, 209);
-            panel4.TabIndex = 3;
+            chkSecundaria.AutoSize = true;
+            chkSecundaria.Location = new Point(17, 36);
+            chkSecundaria.Name = "chkSecundaria";
+            chkSecundaria.Size = new Size(84, 19);
+            chkSecundaria.TabIndex = 1;
+            chkSecundaria.Text = "Secundaria";
+            chkSecundaria.UseVisualStyleBackColor = true;
             // 
-            // label6
+            // chkPrincipal
             // 
-            label6.AutoSize = true;
-            label6.Location = new Point(16, 112);
-            label6.Name = "label6";
-            label6.Size = new Size(51, 15);
-            label6.TabIndex = 1;
-            label6.Text = "Sucursal";
-            // 
-            // label5
-            // 
-            label5.AutoSize = true;
-            label5.Location = new Point(16, 16);
-            label5.Name = "label5";
-            label5.Size = new Size(69, 15);
-            label5.TabIndex = 0;
-            label5.Text = "Distribuidor";
+            chkPrincipal.AutoSize = true;
+            chkPrincipal.Location = new Point(17, 11);
+            chkPrincipal.Name = "chkPrincipal";
+            chkPrincipal.Size = new Size(72, 19);
+            chkPrincipal.TabIndex = 0;
+            chkPrincipal.Text = "Principal";
+            chkPrincipal.UseVisualStyleBackColor = true;
             // 
             // tmrFechaHora
             // 
             tmrFechaHora.Enabled = true;
             tmrFechaHora.Tick += tmrFechaHora_Tick;
             // 
+            // pnlDistribuidor
+            // 
+            pnlDistribuidor.BorderStyle = BorderStyle.FixedSingle;
+            pnlDistribuidor.Location = new Point(12, 44);
+            pnlDistribuidor.Name = "pnlDistribuidor";
+            pnlDistribuidor.Size = new Size(476, 72);
+            pnlDistribuidor.TabIndex = 4;
+            // 
+            // label5
+            // 
+            label5.AutoSize = true;
+            label5.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label5.Location = new Point(13, 25);
+            label5.Name = "label5";
+            label5.Size = new Size(72, 16);
+            label5.TabIndex = 5;
+            label5.Text = "Distribuidor";
+            // 
+            // label6
+            // 
+            label6.AutoSize = true;
+            label6.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            label6.Location = new Point(12, 121);
+            label6.Name = "label6";
+            label6.Size = new Size(56, 16);
+            label6.TabIndex = 6;
+            label6.Text = "Sucursal";
+            // 
+            // lblDistribuidor
+            // 
+            lblDistribuidor.AutoSize = true;
+            lblDistribuidor.Font = new Font("Tahoma", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblDistribuidor.Location = new Point(138, 110);
+            lblDistribuidor.Name = "lblDistribuidor";
+            lblDistribuidor.Size = new Size(52, 18);
+            lblDistribuidor.TabIndex = 9;
+            lblDistribuidor.Text = "label11";
+            // 
             // Farmacia
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(968, 609);
-            Controls.Add(panel4);
+            Controls.Add(label6);
+            Controls.Add(label5);
+            Controls.Add(pnlDistribuidor);
+            Controls.Add(pnlSucursal);
             Controls.Add(panel3);
             Controls.Add(panel2);
             Controls.Add(panel1);
@@ -370,10 +421,11 @@
             ((System.ComponentModel.ISupportInitialize)tblHistoricoPedidos).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)numericUpDown1).EndInit();
-            panel4.ResumeLayout(false);
-            panel4.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)nmCantidadProducto).EndInit();
+            pnlSucursal.ResumeLayout(false);
+            pnlSucursal.PerformLayout();
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
@@ -381,18 +433,15 @@
         private Panel panel1;
         private Panel panel2;
         private Panel panel3;
-        private Panel panel4;
-        private ComboBox cbCantidadUnidades;
-        private TextBox txtNombreMedicamento;
+        private Panel pnlSucursal;
+        private ComboBox cbTipoMedicamento;
         private Label label1;
-        private NumericUpDown numericUpDown1;
+        private NumericUpDown nmCantidadProducto;
         private Label label4;
-        private Button button1;
+        private Button btnAgregarProducto;
         private Label label3;
         private Label label2;
         private Label label7;
-        private Label label6;
-        private Label label5;
         private Label label10;
         private Label label9;
         private Label label8;
@@ -406,8 +455,15 @@
         private DataGridViewTextBoxColumn Nombre;
         private DataGridViewTextBoxColumn Cantidad;
         private Label lblSucursal;
-        private Label lblDistribuidor;
         private Label lblFechaHora;
         private System.Windows.Forms.Timer tmrFechaHora;
+        private Panel pnlDistribuidor;
+        private Label label5;
+        private Label label6;
+        private CheckBox chkSecundaria;
+        private CheckBox chkPrincipal;
+        private TextBox txtNombreMedicamento;
+        private Button btnTerminarPedido;
+        private Label lblDistribuidor;
     }
 }

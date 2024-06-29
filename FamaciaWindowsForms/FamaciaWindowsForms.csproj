@@ -8,4 +8,9 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\FarmaciaWindowsForms.Controllers\FarmaciaWindowsForms.Controllers.csproj" />
+    <ProjectReference Include="..\FarmaciaWindowsForms.Models\FarmaciaWindowsForms.Models.csproj" />
+  </ItemGroup>
+
 </Project>

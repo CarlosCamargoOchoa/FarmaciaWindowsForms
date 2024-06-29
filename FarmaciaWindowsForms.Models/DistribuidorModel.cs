@@ -8,7 +8,7 @@ namespace FarmaciaWindowsForms.Models
 {
     public class DistribuidorModel
     {
-        private int Id { get; set; } 
-        private string Descripcion { get; set; }
+        public int Id { get; set; } 
+        public string Descripcion { get; set; }
     }
 }

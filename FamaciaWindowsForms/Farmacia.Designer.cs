@@ -30,6 +30,7 @@
         {
             components = new System.ComponentModel.Container();
             panel1 = new Panel();
+            lblDistribuidor = new Label();
             btnTerminarPedido = new Button();
             lblSucursal = new Label();
             lblFechaHora = new Label();
@@ -49,6 +50,9 @@
             CantidadProductos = new DataGridViewTextBoxColumn();
             label7 = new Label();
             panel3 = new Panel();
+            lblValidacionCantidadProducto = new Label();
+            lblValidacionTipoMedicamento = new Label();
+            lblValidacionNombreMedicamento = new Label();
             txtNombreMedicamento = new TextBox();
             btnAgregarProducto = new Button();
             label3 = new Label();
@@ -63,7 +67,8 @@
             pnlDistribuidor = new Panel();
             label5 = new Label();
             label6 = new Label();
-            lblDistribuidor = new Label();
+            lblValidacionDistribuidor = new Label();
+            lblValidacionSucursal = new Label();
             panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)tblProductos).BeginInit();
             panel2.SuspendLayout();
@@ -90,6 +95,15 @@
             panel1.Size = new Size(464, 385);
             panel1.TabIndex = 0;
             // 
+            // lblDistribuidor
+            // 
+            lblDistribuidor.AutoSize = true;
+            lblDistribuidor.Font = new Font("Tahoma", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            lblDistribuidor.Location = new Point(138, 110);
+            lblDistribuidor.Name = "lblDistribuidor";
+            lblDistribuidor.Size = new Size(0, 18);
+            lblDistribuidor.TabIndex = 9;
+            // 
             // btnTerminarPedido
             // 
             btnTerminarPedido.Location = new Point(373, 352);
@@ -98,6 +112,7 @@
             btnTerminarPedido.TabIndex = 8;
             btnTerminarPedido.Text = "Finalizar";
             btnTerminarPedido.UseVisualStyleBackColor = true;
+            btnTerminarPedido.Click += btnTerminarPedido_Click;
             // 
             // lblSucursal
             // 
@@ -250,6 +265,9 @@
             // panel3
             // 
             panel3.BorderStyle = BorderStyle.FixedSingle;
+            panel3.Controls.Add(lblValidacionCantidadProducto);
+            panel3.Controls.Add(lblValidacionTipoMedicamento);
+            panel3.Controls.Add(lblValidacionNombreMedicamento);
             panel3.Controls.Add(txtNombreMedicamento);
             panel3.Controls.Add(btnAgregarProducto);
             panel3.Controls.Add(label3);
@@ -261,6 +279,30 @@
             panel3.Name = "panel3";
             panel3.Size = new Size(476, 170);
             panel3.TabIndex = 2;
+            // 
+            // lblValidacionCantidadProducto
+            // 
+            lblValidacionCantidadProducto.AutoSize = true;
+            lblValidacionCantidadProducto.Location = new Point(139, 121);
+            lblValidacionCantidadProducto.Name = "lblValidacionCantidadProducto";
+            lblValidacionCantidadProducto.Size = new Size(0, 15);
+            lblValidacionCantidadProducto.TabIndex = 10;
+            // 
+            // lblValidacionTipoMedicamento
+            // 
+            lblValidacionTipoMedicamento.AutoSize = true;
+            lblValidacionTipoMedicamento.Location = new Point(143, 64);
+            lblValidacionTipoMedicamento.Name = "lblValidacionTipoMedicamento";
+            lblValidacionTipoMedicamento.Size = new Size(0, 15);
+            lblValidacionTipoMedicamento.TabIndex = 9;
+            // 
+            // lblValidacionNombreMedicamento
+            // 
+            lblValidacionNombreMedicamento.AutoSize = true;
+            lblValidacionNombreMedicamento.Location = new Point(166, 20);
+            lblValidacionNombreMedicamento.Name = "lblValidacionNombreMedicamento";
+            lblValidacionNombreMedicamento.Size = new Size(0, 15);
+            lblValidacionNombreMedicamento.TabIndex = 8;
             // 
             // txtNombreMedicamento
             // 
@@ -301,7 +343,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(17, 13);
+            label1.Location = new Point(16, 21);
             label1.Name = "label1";
             label1.Size = new Size(147, 15);
             label1.TabIndex = 3;
@@ -361,7 +403,7 @@
             // pnlDistribuidor
             // 
             pnlDistribuidor.BorderStyle = BorderStyle.FixedSingle;
-            pnlDistribuidor.Location = new Point(12, 44);
+            pnlDistribuidor.Location = new Point(12, 30);
             pnlDistribuidor.Name = "pnlDistribuidor";
             pnlDistribuidor.Size = new Size(476, 72);
             pnlDistribuidor.TabIndex = 4;
@@ -370,7 +412,7 @@
             // 
             label5.AutoSize = true;
             label5.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label5.Location = new Point(13, 25);
+            label5.Location = new Point(12, 9);
             label5.Name = "label5";
             label5.Size = new Size(72, 16);
             label5.TabIndex = 5;
@@ -380,27 +422,35 @@
             // 
             label6.AutoSize = true;
             label6.Font = new Font("Tahoma", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            label6.Location = new Point(12, 121);
+            label6.Location = new Point(12, 118);
             label6.Name = "label6";
             label6.Size = new Size(56, 16);
             label6.TabIndex = 6;
             label6.Text = "Sucursal";
             // 
-            // lblDistribuidor
+            // lblValidacionDistribuidor
             // 
-            lblDistribuidor.AutoSize = true;
-            lblDistribuidor.Font = new Font("Tahoma", 11.25F, FontStyle.Regular, GraphicsUnit.Point, 0);
-            lblDistribuidor.Location = new Point(138, 110);
-            lblDistribuidor.Name = "lblDistribuidor";
-            lblDistribuidor.Size = new Size(52, 18);
-            lblDistribuidor.TabIndex = 9;
-            lblDistribuidor.Text = "label11";
+            lblValidacionDistribuidor.AutoSize = true;
+            lblValidacionDistribuidor.Location = new Point(90, 8);
+            lblValidacionDistribuidor.Name = "lblValidacionDistribuidor";
+            lblValidacionDistribuidor.Size = new Size(0, 15);
+            lblValidacionDistribuidor.TabIndex = 7;
+            // 
+            // lblValidacionSucursal
+            // 
+            lblValidacionSucursal.AutoSize = true;
+            lblValidacionSucursal.Location = new Point(75, 117);
+            lblValidacionSucursal.Name = "lblValidacionSucursal";
+            lblValidacionSucursal.Size = new Size(0, 15);
+            lblValidacionSucursal.TabIndex = 8;
             // 
             // Farmacia
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(968, 609);
+            Controls.Add(lblValidacionSucursal);
+            Controls.Add(lblValidacionDistribuidor);
             Controls.Add(label6);
             Controls.Add(label5);
             Controls.Add(pnlDistribuidor);
@@ -465,5 +515,10 @@
         private TextBox txtNombreMedicamento;
         private Button btnTerminarPedido;
         private Label lblDistribuidor;
+        private Label lblValidacionDistribuidor;
+        private Label lblValidacionSucursal;
+        private Label lblValidacionNombreMedicamento;
+        private Label lblValidacionTipoMedicamento;
+        private Label lblValidacionCantidadProducto;
     }
 }

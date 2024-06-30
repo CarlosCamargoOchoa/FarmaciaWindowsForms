@@ -1,5 +1,6 @@
 using FarmaciaWindowsForms.Controllers;
 using FarmaciaWindowsForms.Models;
+using System.Runtime.CompilerServices;
 using static System.Diagnostics.Activity;
 
 namespace FamaciaWindowsForms
@@ -34,6 +35,80 @@ namespace FamaciaWindowsForms
             tmrFechaHora.Interval = 1000;
             tmrFechaHora.Enabled = true;
 
+        }
+
+        public bool ValidarEntradaProducto()
+        {
+            bool objValidacionCompleta = true;
+            int idDistribuidorSeleccionado = -1;
+            string distribuidor = pnlDistribuidor.Controls.OfType<RadioButton>().FirstOrDefault(rb => rb.Checked)?.Text != null ? pnlDistribuidor.Controls.OfType<RadioButton>().FirstOrDefault(rb => rb.Checked)?.Text : String.Empty;
+
+            if (distribuidor == string.Empty)
+            {
+                objValidacionCompleta = false;
+                this.lblValidacionDistribuidor.Text = "Distribuidor requerido.";
+                this.lblValidacionDistribuidor.ForeColor = Color.Red;
+            }
+            else
+            {
+                idDistribuidorSeleccionado = objPedido.distribuidor.Find(x => x.Descripcion == distribuidor).Id;
+                this.objDistribuidor = idDistribuidorSeleccionado;
+                this.lblValidacionDistribuidor.Text = "";
+            }
+            if (!(this.chkPrincipal.Checked || this.chkSecundaria.Checked))
+            {
+                objValidacionCompleta = false;
+                this.lblValidacionSucursal.Text = "Sucursal requerida.";
+                this.lblValidacionSucursal.ForeColor = Color.Red;
+            }
+            else
+            {
+                this.lblValidacionSucursal.Text = "";
+                if (this.chkPrincipal.Checked)
+                {
+                    this.objSucursal.Add(objPedido.sucursal.Find(x => x.Distribuidor.Descripcion == distribuidor && x.Descripcion == "Principal").Id);
+                }
+                if (this.chkSecundaria.Checked)
+                {
+                    this.objSucursal.Add(objPedido.sucursal.Find(x => x.Distribuidor.Descripcion == distribuidor && x.Descripcion == "Secundaria").Id);
+                }
+            }
+            if (txtNombreMedicamento.Text.Equals(""))
+            {
+                objValidacionCompleta = false;
+                this.lblValidacionNombreMedicamento.Text = "Nombre del medicamento requerido.";
+                this.lblValidacionNombreMedicamento.ForeColor = Color.Red;
+            }
+            else
+            {
+                this.lblValidacionNombreMedicamento.Text = "";
+                this.objNombreMedicamento = txtNombreMedicamento.Text;
+            }
+            ClassItems tipoProducto = (ClassItems)(cbTipoMedicamento.SelectedItem);
+            if (tipoProducto == null)
+            {
+                objValidacionCompleta = false;
+                this.lblValidacionTipoMedicamento.Text = "Tipo de medicamento no valido.";
+                this.lblValidacionTipoMedicamento.ForeColor = Color.Red;
+            }
+            else
+            {
+                this.lblValidacionTipoMedicamento.Text = "";
+                this.objTipoMedicamento = tipoProducto.Name;
+            }
+
+            if (nmCantidadProducto.Value <= 0)
+            {
+                objValidacionCompleta = false;
+                this.lblValidacionCantidadProducto.Text = "Cantidad de medicamento requerida.";
+                this.lblValidacionCantidadProducto.ForeColor = Color.Red;
+            }
+            else
+            {
+                this.lblValidacionCantidadProducto.Text = "";
+                this.objCantidadMedicamento = (int)nmCantidadProducto.Value;
+            }
+            return objValidacionCompleta;
         }
 
         private void AgregarMedicamento()
@@ -72,7 +147,10 @@ namespace FamaciaWindowsForms
                 this.objPedido.pedidoDetalle.Add(dt);
             }
             MedicamentoModel medicamento = new MedicamentoModel();
-            dt.Medicamentos = new List<MedicamentoModel>();
+            if(dt.Medicamentos == null)
+            {
+                dt.Medicamentos = new List<MedicamentoModel>();
+            }
             medicamento.Id = medicamentoId;
             medicamento.Descripcion = nombreProducto;
             medicamento.TipoMedicamento = tipoMedicamento;
@@ -83,8 +161,6 @@ namespace FamaciaWindowsForms
             this.nmCantidadProducto.Value = 0;
             this.txtNombreMedicamento.Text = String.Empty;
             this.cbTipoMedicamento.SelectedIndex = -1;
-            this.chkPrincipal.Checked = false;
-            this.chkSecundaria.Checked = false;
 
         }
 
@@ -130,20 +206,21 @@ namespace FamaciaWindowsForms
 
         public void AgregarRegistrosTablaProductos(int encabezadoId)
         {
+            tblProductos.Rows.Clear();
             this.objPedido.pedidoDetalle.ForEach(dp =>
             {
                 if (dp.Encabezado.Id == encabezadoId)
                 {
-                    DataGridViewRow fila = new DataGridViewRow();
+
                     dp.Medicamentos.ForEach(medicamento =>
                     {
-
+                        DataGridViewRow fila = new DataGridViewRow();
                         fila.Cells.Add(new DataGridViewTextBoxCell { Value = medicamento.TipoMedicamento.Descripcion });
                         fila.Cells.Add(new DataGridViewTextBoxCell { Value = medicamento.Descripcion });
                         fila.Cells.Add(new DataGridViewTextBoxCell { Value = medicamento.Cantidad });
-
+                        tblProductos.Rows.Add(fila);
                     });
-                    tblProductos.Rows.Add(fila);
+
                 }
 
             });
@@ -192,7 +269,96 @@ namespace FamaciaWindowsForms
 
         private void btnAgregarProducto_Click(object sender, EventArgs e)
         {
-            this.AgregarMedicamento();
+            if (ValidarEntradaProducto())
+            {
+                this.AgregarMedicamento();
+            }
+        }
+
+        public void ReestablecerComponentesFormulario()
+        {
+            this.VisualizarHistoricoPedido();
+            this.MostrarReciboCaja();
+            CrearEncabezado = true;
+            chkPrincipal.Checked = false;
+            chkSecundaria.Checked = false;
+            txtNombreMedicamento.Text = "";
+            cbTipoMedicamento.SelectedIndex = -1;
+            nmCantidadProducto.Value = 0;
+            tblProductos.Rows.Clear();
+            lblDistribuidor.Text = "";
+            lblSucursal.Text = "";
+        }
+
+
+        public void VisualizarHistoricoPedido()
+        {
+            int totalMedicamentos = 0;
+            foreach (var dp in this.objPedido.pedidoDetalle)
+            {
+                foreach (var obj in dp.Medicamentos)
+                {
+                    totalMedicamentos += obj.Cantidad;
+                }
+                String Sucursales = "";
+                List<SucursalModel> objS = dp.Encabezado.Sucursales;
+                foreach (var s in objS)
+                {
+                    Sucursales += s.Descripcion + " ";
+                }
+
+                DataGridViewRow fila = new DataGridViewRow();
+                fila.Cells.Add(new DataGridViewTextBoxCell { Value = dp.Encabezado.Sucursales.FirstOrDefault().Distribuidor.Descripcion });
+                fila.Cells.Add(new DataGridViewTextBoxCell { Value = Sucursales });
+                fila.Cells.Add(new DataGridViewTextBoxCell { Value = this.lblFechaHora.Text });
+                fila.Cells.Add(new DataGridViewTextBoxCell { Value = totalMedicamentos });
+                tblHistoricoPedidos.Rows.Add(fila);
+            }
+
+
+        }
+
+        public void MostrarReciboCaja()
+        {
+            PedidoDetalleModel objPedido = this.objPedido.pedidoDetalle.LastOrDefault();
+            var obj = new frReciboCaja();
+            String sucursales = "";
+            String direcciones = "";
+            foreach (var t in objPedido.Encabezado.Sucursales)
+            {
+                sucursales += t.Descripcion + " - ";
+                direcciones += t.Direccion + " - ";
+            }
+            obj.lblDistribuidor.Text = objPedido.Encabezado.Sucursales.LastOrDefault().Distribuidor.Descripcion;
+            obj.lblDireccion.Text = direcciones;
+            obj.lblSucursal.Text = sucursales;
+            obj.lblFechaHora.Text = this.lblFechaHora.Text;
+
+            foreach (var dp in this.objPedido.pedidoDetalle)
+            {
+                if (dp.Encabezado.Id == objPedido.Encabezado.Id)
+                {
+                    DataGridViewRow[] filaList = new DataGridViewRow[dp.Medicamentos.Count];
+                    int i = 0;
+                    foreach (var ob in dp.Medicamentos)
+                    {
+                        DataGridViewRow fila = new DataGridViewRow();
+                        fila.Cells.Add(new DataGridViewTextBoxCell { Value = ob.TipoMedicamento.Descripcion });
+                        fila.Cells.Add(new DataGridViewTextBoxCell { Value = ob.Descripcion });
+                        fila.Cells.Add(new DataGridViewTextBoxCell { Value = ob.Cantidad });
+                        filaList[i] = fila;
+                        i++;
+                        
+                    }
+                    obj.tblMedicamentos.Rows.AddRange(filaList);
+                }
+            }
+            obj.ShowDialog();
+        }
+
+        private void btnTerminarPedido_Click(object sender, EventArgs e)
+        {
+            ReestablecerComponentesFormulario();
         }
     }
 
